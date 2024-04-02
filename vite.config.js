@@ -5,7 +5,7 @@ import { resolve } from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/https://github.com/FatouNdour30/Dashboard_App.git/', // Chemin de base pour le déploiement sur GitHub Pages
+  base: '/Dashboard_App/', // Chemin de base pour le déploiement sur GitHub Pages
   build: {
     outDir: 'dist', // Répertoire de sortie pour les fichiers de construction
   },

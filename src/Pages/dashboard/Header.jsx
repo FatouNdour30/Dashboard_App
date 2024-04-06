@@ -1,62 +1,112 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, IconButton, Avatar, Button, Modal, Box, List, ListItem, ListItemText, Divider } from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, Avatar, Button, Modal, Box, List, ListItem, ListItemText, Divider, Menu, MenuItem, TextField, Paper } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SearchIcon from '@mui/icons-material/Search';
+import MailIcon from '@mui/icons-material/Mail'; // Icône pour Nouveau Message
+import PublishIcon from '@mui/icons-material/Publish'; // Icône pour Publier le Contenu
 import { formatDistanceToNow } from 'date-fns';
 
 function Header() {
-  // État pour gérer l'ouverture et la fermeture de la modal
   const [openModal, setOpenModal] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [searchInput, setSearchInput] = useState('');
+  const [isComposeOpen, setIsComposeOpen] = useState(false); // État pour afficher le formulaire de nouveau message
 
-  // Tableau de notifications simulées pour tester
   const notifications = [
     { id: 1, title: 'Nouveau message', time: new Date() },
     { id: 2, title: 'Nouvelle demande d\'ami', time: new Date() },
     { id: 3, title: 'Publication partagée', time: new Date() },
   ];
 
-  // Fonction pour ouvrir la modal
   const handleOpenModal = () => {
     setOpenModal(true);
   };
 
-  // Fonction pour fermer la modal
   const handleCloseModal = () => {
     setOpenModal(false);
+  };
+
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleProfileMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleSearchInputChange = (event) => {
+    setSearchInput(event.target.value);
+  };
+
+  const filteredNotifications = notifications.filter(notification =>
+    notification.title.toLowerCase().includes(searchInput.toLowerCase())
+  );
+
+  const handleComposeOpen = () => {
+    setIsComposeOpen(true);
+  };
+
+  const handleComposeClose = () => {
+    setIsComposeOpen(false);
   };
 
   return (
     <AppBar position="static">
       <Toolbar>
-        {/* Logo ou titre */}
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Docteur JavaScript
         </Typography>
 
-        {/* Bouton Menu */}
         <IconButton color="inherit" aria-label="menu">
           <MenuIcon />
         </IconButton>
 
-        {/* Bouton Notifications avec ouverture de la modal */}
         <IconButton color="inherit" aria-label="notifications" onClick={handleOpenModal}>
           <NotificationsIcon />
         </IconButton>
 
-        {/* Avatar de l'utilisateur */}
+        <IconButton color="inherit" aria-label="search">
+          <SearchIcon />
+        </IconButton>
+
+        <TextField
+          label="Rechercher..."
+          variant="outlined"
+          size="small"
+          value={searchInput}
+          onChange={handleSearchInputChange} className='me-md-3'
+        />
+
+        {/* Bouton de Nouveau Message */}
+        <IconButton color="inherit" aria-label="new-message" onClick={handleComposeOpen}>
+          <MailIcon />
+        </IconButton>
+
+        {/* Bouton de Publier le Contenu */}
+        <IconButton color="inherit" aria-label="publish-content">
+          <PublishIcon />
+        </IconButton>
+
         <Avatar alt="User Avatar" src="/path/to/avatar.jpg" />
 
-        {/* Bouton Connexion */}
-        <Button color="inherit">Connexion</Button>
-
-        {/* Bouton Inscription */}
-        <Button color="inherit">Inscription</Button>
-
-        {/* Icône de compte utilisateur */}
-        <IconButton color="inherit" aria-label="account">
-          <AccountCircleIcon />
-        </IconButton>
+        <Button
+          color="inherit"
+          aria-controls="profile-menu"
+          aria-haspopup="true"
+          onClick={handleProfileMenuOpen}
+        >
+          Mon Profil
+        </Button>
+        <Menu
+          id="profile-menu"
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleProfileMenuClose}
+        >
+          <MenuItem onClick={handleProfileMenuClose}>Gérer le profil</MenuItem>
+          <MenuItem onClick={handleProfileMenuClose}>Déconnexion</MenuItem>
+        </Menu>
       </Toolbar>
 
       {/* Modal de Notifications */}
@@ -71,7 +121,7 @@ function Header() {
             Notifications
           </Typography>
           <List>
-            {notifications.map((notification) => (
+            {filteredNotifications.map((notification) => (
               <React.Fragment key={notification.id}>
                 <ListItem button>
                   <ListItemText primary={notification.title} secondary={`Il y a ${formatDistanceToNow(notification.time)} - ${notification.time.toLocaleString()}`} />
@@ -85,9 +135,27 @@ function Header() {
           </Box>
         </Box>
       </Modal>
+
+      {/* Formulaire de Nouveau Message */}
+      <Modal
+        open={isComposeOpen}
+        onClose={handleComposeClose}
+        aria-labelledby="compose-title"
+        aria-describedby="compose-description"
+      >
+        <Paper sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 400, bgcolor: 'background.paper', border: '2px solid #000', boxShadow: 24, p: 4 }}>
+          <Typography id="compose-title" variant="h6" component="h2" mb={2}>
+            Nouveau Message
+          </Typography>
+          <TextField label="Sujet" variant="outlined" fullWidth mb={2} />
+          <TextField label="Contenu" variant="outlined" fullWidth multiline rows={4} />
+          <Box sx={{ textAlign: 'center', mt: 2 }}>
+            <Button variant="contained" onClick={handleComposeClose}>Envoyer</Button>
+          </Box>
+        </Paper>
+      </Modal>
     </AppBar>
   );
 }
 
 export default Header;
-

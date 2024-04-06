@@ -6,7 +6,8 @@ import logo from "../../assets/logo.png"; // Assurez-vous que le chemin est corr
 
 function Sidebar() {
   return (
-    <div className="sidebar-container bg-dark" style={{ height: '160vh', boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)' }}>
+    <div className="sidebar-container bg-dark" style={{ minHeight: '100vh', boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)', width: '"300px' }}>
+
       {/* Logo et nom de l'application */}
       <Navbar.Brand className="d-flex align-items-center justify-content-center p-3">
         <Image src={logo} alt="Logo" className="logo" style={{ height: '50px', width: 'auto' }} />
@@ -50,8 +51,6 @@ function Sidebar() {
         </Nav.Item>
 
         {/* Liens supplémentaires avec effets de survol et animations */}
-        <hr className="dropdown-divider text-light my-3" />
-        <h6 className="dropdown-header text-light">Options</h6>
         <Nav.Item className="nav-item">
           <Link to="/dashboard/parametres" className="nav-link text-light d-flex align-items-center py-3">
             <BsGear className="me-2 icon" />
@@ -89,7 +88,7 @@ function Sidebar() {
       </Nav>
 
       {/* Footer du Sidebar */}
-      <div className="sidebar-footer p-3">
+      <div className="sidebar-footer p-3 mt-auto">
         <small className="text-warning">© 2024 Nom de l'Application</small>
       </div>
     </div>

@@ -19,6 +19,8 @@ function App() {
               <Col>
                 <Route exact path="/inscription" component={Inscription} />
                 <Route exact path="/connexion" component={Connexion} />
+                
+
                 {/* Ajoutez ici les autres routes et composants selon votre besoin */}
               </Col>
             </Row>

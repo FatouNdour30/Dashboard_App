@@ -5,7 +5,6 @@ import { resolve } from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/FatouScript/', // Chemin de base pour le déploiement sur GitHub Pages
   build: {
     outDir: 'dist', // Répertoire de sortie pour les fichiers de construction
   },
